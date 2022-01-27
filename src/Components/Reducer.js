@@ -14,9 +14,7 @@ async()=>{
 )
 export const ToDoReducer =createSlice({
     name:'todo',
-    initialState:[
-        // {id:id,title:'todo1',status:false },
-    ],
+    initialState:[],
     reducers:{
         todo:(state,action)=>{
             const newtodo= {
@@ -27,16 +25,16 @@ export const ToDoReducer =createSlice({
             }
             state.push(newtodo)
         },
-        
+        deletask:(state,action)=>{
+            state.splice(action.payload,1)
+        }
     },
     extraReducers:{
         [AsyncThunk.fulfilled]:(state,action)=>{
              state.push( action.payload) 
         }
     }
-
-
 })
 
-export const {todo}=ToDoReducer.actions
+export const {todo,deletask}=ToDoReducer.actions
 export default ToDoReducer.reducer
