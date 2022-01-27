@@ -17,13 +17,13 @@ function App() {
 
   return (
     <div>
-      <div>
+      <form onSubmit={(e)=>e.preventDefault()}>
         <input
           onChange={(e) => {
             setinput(e.target.value);
           }}
         ></input>
-        <button onClick={() => dispatch(todo(input))}>Add</button>
+        <button type="submit" disabled={!input} onClick={() => dispatch(todo(input))}>Add</button>
         {count &&
           count.map((row, index) => (
             <p key={row.id}>
@@ -31,7 +31,7 @@ function App() {
               <button onClick={() => dispatch(deletask(index))}>delete</button>
             </p>
           ))}
-      </div>
+      </form>
     </div>
   );
 }
