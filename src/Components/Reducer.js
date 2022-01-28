@@ -1,11 +1,9 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 
-let id = 1
-
 
 export const AsyncThunk=createAsyncThunk('AsyncApi',
 async()=>{
-    const response=await fetch('https://jsonplaceholder.typicode.com/todos/1')
+    const response=await fetch('https://jsonplaceholder.typicode.com/posts/1')
     if (response.ok){
         const data = await response.json();
         return data
@@ -17,13 +15,7 @@ export const ToDoReducer =createSlice({
     initialState:[],
     reducers:{
         todo:(state,action)=>{
-            const newtodo= {
-                userid:1,
-                id:++id,
-                title:action.payload,
-                status:false
-            }
-            state.push(newtodo)
+            state.push(action.payload)
         },
         deletask:(state,action)=>{
             state.splice(action.payload,1)
