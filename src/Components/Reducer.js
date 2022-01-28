@@ -1,29 +1,41 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 
 
-export const AsyncThunk=createAsyncThunk('AsyncApi',
+export const AsyncThunkGet=createAsyncThunk('AsyncApi',
 async()=>{
     const response=await fetch('https://jsonplaceholder.typicode.com/posts')
     if (response.ok){
         const data = await response.json();
-        console.log("fetch",data);
         return data
     }
 }
 )
+
+export const AsyncThunkPost=createAsyncThunk('AsyncApi',
+async(prop)=>{
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts',prop)
+        const data = await response.json();
+        console.log("post",data);
+        return data
+    })
+
+
 export const ToDoReducer =createSlice({
     name:'todo',
     initialState:[],
     reducers:{
         todo:(state,action)=>{
-            state[0].push(action.payload)
+            state.push(action.payload)
         },
         deletask:(state,action)=>{
             state.splice(action.payload,1)
         }
     },
     extraReducers:{
-        [AsyncThunk.fulfilled]:(state,action)=>{
+        [AsyncThunkGet.fulfilled]:(state,action)=>{
+             state.push(action.payload)
+        },
+        [AsyncThunkPost.fulfilled]:(state,action)=>{
              state.push(action.payload)
         }
     }
