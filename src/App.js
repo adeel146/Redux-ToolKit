@@ -9,29 +9,27 @@ import { Input,Button, Card, CardContent } from "@mui/material";
 function App() {
   const dispatch = useDispatch();
   const [input, setinput] = useState("");
-  const count = useSelector((state) => state.ToDo);
+  const count = useSelector((state) => state.ToDo[0]);
 
   useEffect(() => {
     dispatch(AsyncThunk());
   }, []);
 
   const post = async () => {
-    let id = 1;
+    // let id = 1;
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        completed: false,
+        title:input,
         userId: 1,
-        id: ++id,
-        title: input,
       }),
     };
-    const response = await fetch("https://reqres.in/api/posts", requestOptions);
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", requestOptions);
     const data = await response.json();
     dispatch(todo(data));
-    console.log("data", data);
   };
+  console.log(count);
   return (
     <div className="App">
       <form onSubmit={(e) => e.preventDefault()}>
