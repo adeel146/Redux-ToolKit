@@ -4,18 +4,19 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AsyncThunkGet, AsyncThunkPost, deletask } from "./Components/Reducer";
 import { Input, Button, Card, CardContent } from "@mui/material";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function App() {
   const [input, setinput] = useState("");
   const dispatch = useDispatch();
-
-  const count = useSelector((state) => state.ToDo);
+  const status = useSelector((state) => state.ToDo.status);
+  const count = useSelector((state) => state.ToDo.data);
 
   useEffect(() => {
     dispatch(AsyncThunkGet());
   }, []);
 
-  console.log("useselector",count);
+  console.log("status", status);
   return (
     <div className="App">
       <form onSubmit={(e) => e.preventDefault()}>
@@ -44,13 +45,17 @@ function App() {
         </Button>
       </form>
       <Card>
-        {count &&
+        {status === "pending" ? (
+          <ClipLoader />
+        ) : (
+          count && status==="success" &&
           count.map((row, index) => (
             <CardContent key={index}>
               {row.title}
               <Button onClick={() => dispatch(deletask(index))}>delete</Button>
             </CardContent>
-          ))}
+          ))
+        )}
       </Card>
     </div>
   );

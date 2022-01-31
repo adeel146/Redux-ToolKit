@@ -20,7 +20,7 @@ export const AsyncThunkPost = createAsyncThunk("AsyncApiPost", async (prop) => {
 
 export const ToDoReducer = createSlice({
   name: "todo",
-  initialState: [],
+  initialState: { status: "", data: "" },
   reducers: {
     todo: (state, action) => {
       state.push(action.payload);
@@ -29,14 +29,22 @@ export const ToDoReducer = createSlice({
       state.splice(action.payload, 1);
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
+    builder.addCase(AsyncThunkGet.pending, (state, action) => {
+      state.status = "pending";
+    });
     builder.addCase(AsyncThunkGet.fulfilled, (state, action) => {
-      state.push.apply(state, action.payload)
-    })
-    builder.addCase(AsyncThunkPost.fulfilled,(state,action)=>{
-      state.push(action.payload)
-    })
-  }
+      state.status = "success";
+      state.data = action.payload;
+    });
+    builder.addCase(AsyncThunkPost.pending, (state, action) => {
+      state.status = "pending";
+    });
+    builder.addCase(AsyncThunkPost.fulfilled, (state, action) => {
+      state.status = "success";
+      state.data.push(action.payload);
+    });
+  },
 });
 
 export const { todo, deletask } = ToDoReducer.actions;
