@@ -8,8 +8,8 @@ import { Input, Button, Card, CardContent } from "@mui/material";
 function App() {
   const [input, setinput] = useState("");
   const dispatch = useDispatch();
-  
-  const count = useSelector((state) => state.ToDo[0]);
+
+  const count = useSelector((state) => state.ToDo);
 
   useEffect(() => {
     dispatch(AsyncThunkGet());
@@ -28,7 +28,7 @@ function App() {
           type="submit"
           disabled={!input}
           onClick={() =>
-            {dispatch(
+            dispatch(
               AsyncThunkPost({
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -38,7 +38,6 @@ function App() {
                 }),
               })
             )
-            setinput('')}
           }
         >
           Add
@@ -47,7 +46,7 @@ function App() {
       <Card>
         {count &&
           count.map((row, index) => (
-            <CardContent key={row.id}>
+            <CardContent key={index}>
               {row.title}
               <Button onClick={() => dispatch(deletask(index))}>delete</Button>
             </CardContent>
